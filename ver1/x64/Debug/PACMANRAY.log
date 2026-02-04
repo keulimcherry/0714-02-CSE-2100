@@ -1,0 +1,8 @@
+﻿  main.c
+C:\Users\Lenovo LOQ\source\repos\PACMANRAY\PACMANRAY\main.c(827,52): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\Lenovo LOQ\source\repos\PACMANRAY\PACMANRAY\main.c(827,58): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\Lenovo LOQ\source\repos\PACMANRAY\PACMANRAY\main.c(828,57): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\Lenovo LOQ\source\repos\PACMANRAY\PACMANRAY\main.c(828,67): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\Lenovo LOQ\source\repos\PACMANRAY\PACMANRAY\main.c(842,21): warning C4244: 'function': conversion from 'int' to 'float', possible loss of data
+C:\Users\Lenovo LOQ\source\repos\PACMANRAY\PACMANRAY\main.c(845,21): warning C4244: 'function': conversion from 'int' to 'float', possible loss of data
+  PACMANRAY.vcxproj -> C:\Users\Lenovo LOQ\source\repos\PACMANRAY\x64\Debug\PACMANRAY.exe
