@@ -858,7 +858,7 @@ void DrawGame(void) {
     }
 
     for (int i = 0; i < GHOST_COUNT; i++) {
-        // 👀 If ghost is eaten - only draw eyes
+        // If ghost is eaten - only draw eyes
         if (game.ghosts[i].mode == MODE_EATEN) {
             int cx = (int)(game.ghosts[i].entity.x + TILE_SIZE / 2);
             int cy = (int)(game.ghosts[i].entity.y + TILE_SIZE / 2);
@@ -874,7 +874,7 @@ void DrawGame(void) {
             continue;  // Don't draw body
         }
 
-        // 😴 Don't draw ghost if it's respawning (waiting invisible at home)
+        // Don't draw ghost if it's respawning (waiting invisible at home)
         if (game.ghosts[i].mode == MODE_RESPAWNING) {
             continue;
         }
@@ -918,7 +918,7 @@ void DrawGame(void) {
             DrawCircle((int)(game.ghosts[i].entity.x + 2 * TILE_SIZE / 3),
                 (int)(game.ghosts[i].entity.y + TILE_SIZE / 3 + 2), 1, PINK);
 
-            // 😢 Sad frown mouth - wavy downward curve
+            // Sad frown mouth - wavy downward curve
             int mouthY = (int)(game.ghosts[i].entity.y + 2 * TILE_SIZE / 3);
             int mouthCenterX = (int)(game.ghosts[i].entity.x + TILE_SIZE / 2);
 
@@ -1026,6 +1026,6 @@ int main(void) {
 
     CloseAudioDevice();
     CloseWindow();
-	//this is a comment to test git changes
     return 0;
+
 }
