@@ -1,0 +1,3 @@
+﻿  render.c
+C:\Users\Lenovo LOQ\source\repos\Pacman-modular\Pacman-modular\render.c(181,9): warning C4013: 'sprintf_s' undefined; assuming extern returning int
+  Pacman-modular.vcxproj -> C:\Users\Lenovo LOQ\source\repos\Pacman-modular\x64\Debug\Pacman-modular.exe
