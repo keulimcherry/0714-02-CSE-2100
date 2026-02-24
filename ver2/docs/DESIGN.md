@@ -254,7 +254,7 @@ gcc -std=c11 -o pacman.exe \
 The binary expects an `assets/` folder in the same directory containing all `.wav` sound files and `spritesheet.png`. Expected filenames are defined in `resources.c`.
 
 ```
-raylib-pacman/
+pacman-modular/
 ├── pacman.exe
 ├── assets/
 │   ├── chomp.wav
@@ -287,7 +287,7 @@ If Raylib is installed system-wide, the `-I` and `-L` flags may not be needed.
 ### File Structure
 
 ```
-raylib-pacman/
+pacman-modular/
 ├── main.c          → Entry point & game loop (~25 lines)
 ├── types.h         → Shared structs, enums, constants
 ├── map.h / map.c   → Maze layout, collision detection
