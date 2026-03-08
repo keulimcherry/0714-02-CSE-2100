@@ -1162,7 +1162,7 @@ This project serves as a **portfolio-ready example** of:
 
 **Pac-Man · Architecture & Technical Report · v1.0 · February 2026**
 
-*Created by Sneha Shah (240242) & Prerana Gupta (240241)*
+*Created by Prerana Gupta (240241) & Sneha Shah (240242)*
 
 ---
 
