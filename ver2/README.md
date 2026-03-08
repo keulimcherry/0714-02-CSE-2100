@@ -28,4 +28,5 @@ License
 This project is released under the MIT License. See `LICENSE` for details.
 
 
-Project implemented by Sneha Shah (240242) and Prerana Gupta (240241)
+Project implemented by Prerana Gupta (240241) and Sneha Shah (240242).
+
