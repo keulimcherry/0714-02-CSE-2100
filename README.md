@@ -6,33 +6,17 @@
 
 ## Table of Contents
 
-1. [Project Summary](#1-project-summary)
-2. [Folder Structure](#2-folder-structure)
-3. [Technology Migration: C + Raylib → Java + LibGDX](#3-technology-migration-c--raylib--java--libgdx)
-4. [UML Diagrams](#4-uml-diagrams)
-5. [SOLID Principles Applied](#5-solid-principles-applied)
-6. [Design Patterns Used](#6-design-patterns-used)
-7. [AI Prompt Set for Execution](#7-ai-prompt-set-for-execution)
-8. [Conclusion](#8-conclusion)
+1. [Folder Structure](#1-folder-structure)
+2. [Technology Migration: C + Raylib → Java + LibGDX](#2-technology-migration-c--raylib--java--libgdx)
+3. [UML Diagrams](#3-uml-diagrams)
+4. [SOLID Principles Applied](#4-solid-principles-applied)
+5. [Design Patterns Used](#5-design-patterns-used)
+6. [AI Prompt Set for Execution](#6-ai-prompt-set-for-execution)
+7. [Conclusion](#7-conclusion)
 
 ---
 
-## 1. Project Summary
-
-| Property | C + Raylib (original) | Java + LibGDX (refactored) |
-|---|---|---|
-| Language | C (procedural) | Java (object-oriented) |
-| Framework | Raylib | LibGDX |
-| Source files | 8 `.c/.h` pairs | 38 `.java` files across 9 packages |
-| Interfaces | None | 5 (`Movable`, `Renderable`, `Collidable`, `SoundPlayer`, `InputProvider`) |
-| Inheritance | None | `GhostBehavior` abstract class + 4 concrete subclasses |
-| Global state | `extern Game game` — one struct accessed by every file | `GameData` singleton, injected via constructors |
-| Largest file | `pacman.c` — 273 lines, 8+ responsibilities | No file exceeds 150 lines, each has 1 responsibility |
-| Design patterns | None | Strategy, Singleton, Composition Root |
-
----
-
-## 2. Folder Structure
+## 1. Folder Structure
 
 ### GitHub Repository Layout
 
@@ -72,7 +56,7 @@ Every `.c` file accesses `game` via `extern Game game` — no ownership, no rest
 
 ---
 
-## 3. Technology Migration: C + Raylib → Java + LibGDX
+## 2. Technology Migration: C + Raylib → Java + LibGDX
 
 C is a procedural language. Every feature SOLID depends on — interfaces, polymorphism, access control, dependency injection — does not exist as a language construct in C.
 
@@ -91,7 +75,7 @@ C is a procedural language. Every feature SOLID depends on — interfaces, polym
 
 ---
 
-## 4. UML Diagrams
+## 3. UML Diagrams
 
 ### Diagram 1 — Before (C procedural, flat dependencies)
 
@@ -209,7 +193,7 @@ flowchart LR
 
 ---
 
-## 5. SOLID Principles Applied
+## 4. SOLID Principles Applied
 
 ---
 
@@ -443,7 +427,7 @@ public static boolean isWall(int x, int y, GameData game) {
 
 ---
 
-## 7. Design Patterns Used
+## 5. Design Patterns Used
 
 | Pattern | Where Applied | Purpose |
 |---|---|---|
@@ -454,7 +438,7 @@ public static boolean isWall(int x, int y, GameData game) {
 
 ---
 
-## 7. AI Prompt used for Execution
+## 6. AI Prompt used for Execution
 
 The prompts below were used to guide the step-by-step refactoring from the C codebase to the Java SOLID design. Each prompt targeted a specific problem and produced a concrete, verifiable output.
 
@@ -580,7 +564,7 @@ stateManager = new GameStateManager(sound, input, mv, dots, fruit, gc, map);
 
 ---
 
-## 8. Conclusion
+## 7. Conclusion
 
 The original C codebase had structural problems fundamental to the language — a global struct accessed by every file, 273-line functions with 8 mixed responsibilities, and game logic tightly coupled to Raylib platform calls. Moving to Java provided the language constructs to fix every one of these:
 
