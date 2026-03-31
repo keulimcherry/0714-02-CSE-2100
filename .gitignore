@@ -26,9 +26,6 @@ Thumbs.db
 # Temporary files
 *.tmp
 
-# Keep assets/ tracked — do NOT ignore it
-# (do not add /assets/ here)
-
 # Other
 *.jar
 
