@@ -1,0 +1,37 @@
+# Gradle
+.gradle/
+
+# Build outputs
+**/build/
+/lwjgl3/build/
+/lwjgl3/bin/
+/core/build/
+
+# IntelliJ / IDEA
+.idea/
+*.iml
+*.iws
+out/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Java
+*.class
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+
+# Keep assets/ tracked — do NOT ignore it
+# (do not add /assets/ here)
+
+# Other
+*.jar
+
+# local run config
+run/
+
