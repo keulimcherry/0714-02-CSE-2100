@@ -13,7 +13,8 @@
 5. [UML Diagrams](#5-uml-diagrams)
 6. [SOLID Principles Applied](#6-solid-principles-applied)
 7. [Design Patterns Used](#7-design-patterns-used)
-8. [Conclusion](#8-conclusion)
+8. [AI Prompt Set for Execution](#8-ai-prompt-set-for-execution)
+9. [Conclusion](#9-conclusion)
 
 ---
 
@@ -465,7 +466,133 @@ public static boolean isWall(int x, int y, GameData game) {
 
 ---
 
-## 8. Conclusion
+## 8. AI Prompt used for Execution
+
+The prompts below were used to guide the step-by-step refactoring from the C codebase to the Java SOLID design. Each prompt targeted a specific problem and produced a concrete, verifiable output.
+
+---
+
+## Prompt 1 — Responsibility Audit
+*"Go through every C file in this Pac-Man project. For each file, count how many different things it is responsible for and list them and then tell me which ones are the most urgent to split apart and why."*
+
+| File | Responsibilities Found | Priority |
+|---|---|---|
+| `pacman.c` | Input, movement, dot eating, scoring, power pellets, fruit, ghost collision, state machine | Highest — 8 jobs in 273 lines |
+| `ghost.c` | All 4 ghost AIs, movement, mode timers, siren sound | High — 5 jobs in 252 lines |
+| `render.c` | Ghost drawing, Pac-Man drawing, HUD, fruit, colour helpers | High — 5 jobs in 216 lines |
+| `map.c` | Maze data, position resets, tile queries, `DrawMaze()` | Medium — rendering inside logic file |
+| `resources.c` | Load and unload for 9 global sound/texture variables | Low — manageable but unencapsulated |
+
+---
+
+## Prompt 2 — Global State Elimination
+*"The C project uses `extern Game game` so suggest a Java equivalent that gives controlled, single-point access to game state without exposing it as a raw global."*
+
+**Output:** `GameData` singleton with a private constructor. No other class can create or destroy the game state. `GameData.getInstance()` is the only access point. A `reset()` method allows clean restarts without leftover state.
+
+```java
+// Before (C): any file could write game.score = 0 at any time
+extern Game game;
+
+// After (Java): controlled access through one entry point
+public class GameData {
+    private static GameData instance;
+    private GameData() { /* only GameData constructs itself */ }
+    public static GameData getInstance() {
+        if (instance == null) instance = new GameData();
+        return instance;
+    }
+}
+```
+
+---
+
+## Prompt 3 — Interface Design for Platform Isolation
+*"The game logic in `pacman.c` and `ghost.c` calls Raylib functions like `PlaySound()` and `IsKeyDown()` directly. Design a set of Java interfaces that would let us swap the audio and input framework without touching any game logic."*
+
+**Output:** Two boundary interfaces placed between game logic and LibGDX:
+
+| Interface | Methods | Who implements it | Who uses it |
+|---|---|---|---|
+| `SoundPlayer` | `playChomp()`, `playDeath()`, `startPowerSiren()`, etc. | `LibGdxSoundPlayer` | `DotConsumer`, `GhostCollisionHandler`, `GameStateManager` |
+| `InputProvider` | `getRequestedDirection()`, `isStartPressed()` | `LibGdxInputProvider` | `MovementController`, `GameStateManager` |
+
+Game logic imports only the interface. LibGDX never appears outside `Main.java`.
+
+---
+
+## Prompt 4 — Ghost AI Restructure
+*"In `ghost.c` all four ghost personalities Blinky, Pinky, Inky, Clyde are handled inside one big `if/else if` block. Every time we want to change one ghost we risk breaking the others. Redesign this so each ghost's AI is isolated and adding a new ghost requires zero changes to existing code."*
+
+**Output:** Strategy Pattern — one abstract base, four subclasses.
+
+```mermaid
+classDiagram
+    class GhostBehavior {
+        <<abstract>>
+        +getChaseTarget(ghost, game) int[]
+        +getScatterTarget(ghost) int[]
+    }
+    GhostBehavior <|-- BlinkyBehavior : direct chase
+    GhostBehavior <|-- PinkyBehavior  : 4-tile ambush
+    GhostBehavior <|-- InkyBehavior   : Blinky vector
+    GhostBehavior <|-- ClydeBehavior  : proximity shy
+```
+
+`GhostController` calls `ghost.behavior.getChaseTarget()` — it never checks which ghost type it is. A new ghost = one new file, nothing else changes.
+
+---
+
+## Prompt 5 — Rendering Separation
+*"`map.c` contains `DrawMaze()` alongside tile collision logic. `render.c` draws ghosts, Pac-Man, the HUD, and fruit all inside a single `DrawGame()` function. Split the rendering layer so each visual concern is its own class and the orchestrator draws nothing itself."*
+
+**Output:**
+
+| New Class | Draws |
+|---|---|
+| `MazeRenderer` | Walls, dots, power pellets |
+| `GhostRenderer` | Ghost sprites, frightened state, eyes-only eaten state |
+| `PacmanRenderer` | Pac-Man arc animation, death flicker |
+| `HudRenderer` | Score, level, lives icons, state overlays |
+| `ColourHelper` | Pure colour calculation — no drawing |
+| `Renderer` | Calls the above in order — draws nothing itself |
+
+---
+
+## Prompt 6 — Dependency Wiring Verification
+*"Show me how `Main.java` should be structured as the composition root. It should be the only file that constructs LibGDX objects. Everything else should receive what it needs through its constructor. List every injection point."*
+
+**Output:** All injections visible in one place.
+
+```java
+// Main.java — every dependency constructed and wired here
+SoundPlayer   sound    = new LibGdxSoundPlayer(rm);
+InputProvider input    = new LibGdxInputProvider();
+ScoreManager  scorer   = new ScoreManager(game, sound);
+MovementController mv  = new MovementController(input);
+DotConsumer   dots     = new DotConsumer(sound, scorer);
+FruitManager  fruit    = new FruitManager(sound, scorer);
+GhostCollisionHandler gc = new GhostCollisionHandler(sound, scorer);
+stateManager = new GameStateManager(sound, input, mv, dots, fruit, gc, map);
+// No class below this line ever imports a LibGDX concrete type
+```
+
+---
+
+## Prompt 7 — Final SOLID Verification
+*"Go through all five SOLID principles and tell me whether each one is properly applied in the refactored Java code. For each principle, point to the specific class or pattern that demonstrates it."*
+
+| Principle | Evidence in Code | Verdict |
+|---|---|---|
+| **SRP** | `pacman.c` (8 jobs) → 5 dedicated classes. `render.c` (5 jobs) → 5 renderer classes | ✅ Resolved |
+| **OCP** | Ghost AI `if/else if` → `GhostBehavior` + 4 subclasses. `GhostController` never modified | ✅ Resolved |
+| **LSP** | `Entity` implements `Collidable` — any conforming type works in `GhostCollisionHandler` | ✅ Resolved |
+| **ISP** | 5 focused interfaces — each consumer imports only what it calls | ✅ Resolved |
+| **DIP** | `Main.java` is the only LibGDX import point — all game logic depends on interfaces | ✅ Resolved |
+
+---
+
+## 9. Conclusion
 
 The original C codebase had structural problems fundamental to the language — a global struct accessed by every file, 273-line functions with 8 mixed responsibilities, and game logic tightly coupled to Raylib platform calls. Moving to Java provided the language constructs to fix every one of these:
 
