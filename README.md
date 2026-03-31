@@ -21,7 +21,7 @@
 ### GitHub Repository Layout
 
 ```
-0714-02-CSE-2100/
+Solid-Refactor/
   assets/          ← audio and sprite assets (shared)
   core/            ← all game source code (platform-independent)
     src/main/java/com/pacman/
