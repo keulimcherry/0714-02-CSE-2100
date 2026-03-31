@@ -6,30 +6,18 @@
 
 ## Table of Contents
 
-1. [Assignment Overview](#1-assignment-overview)
-2. [Project Summary](#2-project-summary)
-3. [Folder Structure](#3-folder-structure)
-4. [Technology Migration: C + Raylib → Java + LibGDX](#4-technology-migration-c--raylib--java--libgdx)
-5. [UML Diagrams](#5-uml-diagrams)
-6. [SOLID Principles Applied](#6-solid-principles-applied)
-7. [Design Patterns Used](#7-design-patterns-used)
-8. [AI Prompt Set for Execution](#8-ai-prompt-set-for-execution)
-9. [Conclusion](#9-conclusion)
+1. [Project Summary](#1-project-summary)
+2. [Folder Structure](#2-folder-structure)
+3. [Technology Migration: C + Raylib → Java + LibGDX](#3-technology-migration-c--raylib--java--libgdx)
+4. [UML Diagrams](#4-uml-diagrams)
+5. [SOLID Principles Applied](#5-solid-principles-applied)
+6. [Design Patterns Used](#6-design-patterns-used)
+7. [AI Prompt Set for Execution](#7-ai-prompt-set-for-execution)
+8. [Conclusion](#8-conclusion)
 
 ---
 
-## 1. Assignment Overview
-
-| Step | Requirement | Status |
-|---|---|---|
-| **Step 1** | Original C project on the `main` branch | ✅ Done |
-| **Step 2** | Create a new branch named `solid-refactor` | ✅ Done |
-| **Step 3** | Apply each SOLID principle: SRP, OCP, LSP, ISP, DIP | ✅ Done |
-| **Step 4** | Commit changes to GitHub | ✅ Done |
-
----
-
-## 2. Project Summary
+## 1. Project Summary
 
 | Property | C + Raylib (original) | Java + LibGDX (refactored) |
 |---|---|---|
@@ -44,7 +32,7 @@
 
 ---
 
-## 3. Folder Structure
+## 2. Folder Structure
 
 ### GitHub Repository Layout
 
@@ -84,7 +72,7 @@ Every `.c` file accesses `game` via `extern Game game` — no ownership, no rest
 
 ---
 
-## 4. Technology Migration: C + Raylib → Java + LibGDX
+## 3. Technology Migration: C + Raylib → Java + LibGDX
 
 C is a procedural language. Every feature SOLID depends on — interfaces, polymorphism, access control, dependency injection — does not exist as a language construct in C.
 
@@ -103,7 +91,7 @@ C is a procedural language. Every feature SOLID depends on — interfaces, polym
 
 ---
 
-## 5. UML Diagrams
+## 4. UML Diagrams
 
 ### Diagram 1 — Before (C procedural, flat dependencies)
 
@@ -221,7 +209,7 @@ flowchart LR
 
 ---
 
-## 6. SOLID Principles Applied
+## 5. SOLID Principles Applied
 
 ---
 
@@ -466,7 +454,7 @@ public static boolean isWall(int x, int y, GameData game) {
 
 ---
 
-## 8. AI Prompt used for Execution
+## 7. AI Prompt used for Execution
 
 The prompts below were used to guide the step-by-step refactoring from the C codebase to the Java SOLID design. Each prompt targeted a specific problem and produced a concrete, verifiable output.
 
@@ -592,7 +580,7 @@ stateManager = new GameStateManager(sound, input, mv, dots, fruit, gc, map);
 
 ---
 
-## 9. Conclusion
+## 8. Conclusion
 
 The original C codebase had structural problems fundamental to the language — a global struct accessed by every file, 273-line functions with 8 mixed responsibilities, and game logic tightly coupled to Raylib platform calls. Moving to Java provided the language constructs to fix every one of these:
 
